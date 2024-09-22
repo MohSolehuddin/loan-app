@@ -6,7 +6,7 @@ public class PathApi {
     public static final String SIGN_IN = "/signin";
     public static final String USER = "/api/v1/users";
     public static final String CUSTOMER = "/api/v1/customers";
+    public static final String TRANSACTION = "/api/v1/transactions";
 
     public static final String PATH_VAR_ID = "/{id}";
 }
-
