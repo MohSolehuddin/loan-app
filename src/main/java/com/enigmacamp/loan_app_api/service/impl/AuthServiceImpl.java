@@ -65,7 +65,7 @@ public class AuthServiceImpl implements AuthService {
                     .build();
             customerService.createCustomer(customer);
 
-            List<String> roles = Arrays.asList(roleStaff.getRole().name(), roleAdmin.getRole().name());
+            List<String> roles = Arrays.asList(roleStaff.getRole().name().toLowerCase().substring(5), roleAdmin.getRole().name().toLowerCase().substring(5));
             return RegisterResponse.builder()
                     .email(userCredential.getEmail())
                     .roles(roles)
@@ -91,7 +91,7 @@ public class AuthServiceImpl implements AuthService {
         AppUser appUser = (AppUser) authenticate.getPrincipal();
         String token = jwtUtil.generateToken(appUser);
 
-        List<String> roles = appUser.getRoles().stream().map(role -> role.getRole().name()).toList();
+        List<String> roles = appUser.getRoles().stream().map(role -> role.getRole().name().toLowerCase().substring(5)).toList();
         return LoginResponse.builder()
                 .email(appUser.getEmail())
                 .token(token)

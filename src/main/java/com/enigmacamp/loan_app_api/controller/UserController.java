@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(PathApi.USERS)
 @RequiredArgsConstructor
@@ -23,7 +25,7 @@ public class UserController {
         AppUser user = userService.loadUserByUserId(id);
         UserResponse response = UserResponse.builder()
                 .email(user.getEmail())
-                .roles(user.getRoles().stream().map(role -> role.getRole().name()).toList())
+                .roles(user.getRoles().stream().map(role -> role.getRole().name().toLowerCase().substring(5)).toList())
                 .build();
         return ResponseEntity.status(200).body(
                 CommonResponse.builder()
