@@ -9,7 +9,7 @@ public class AuthMapper {
     public static LoginResponse mapToLoginResponse(AppUser appUser){
         return LoginResponse.builder()
                 .email(appUser.getEmail())
-                .role(appUser.getRoles().toString())
+                .role(appUser.getRoles().stream().map(role -> role.getRole().name()).toList())
                 .build();
     }
     public static RegisterResponse mapToRegisterResponse(AuthRequest request){

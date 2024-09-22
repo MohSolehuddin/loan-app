@@ -17,13 +17,13 @@ public class AppUser implements UserDetails {
     private String id;
     private String email;
     private String password;
-    private List<ERole> roles;
+    private List<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
-        for (ERole role: roles){
-            simpleGrantedAuthorities.add(new SimpleGrantedAuthority(role.name()));
+        for (Role role: roles){
+            simpleGrantedAuthorities.add(new SimpleGrantedAuthority(role.getRole().name()));
         }
         return simpleGrantedAuthorities;
     }

@@ -7,6 +7,7 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.enigmacamp.loan_app_api.entity.AppUser;
+import com.enigmacamp.loan_app_api.entity.Role;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -28,15 +29,13 @@ public class JwtUtil {
     public String generateToken(AppUser appUser) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(jwtSecret.getBytes());
-            String token = JWT.create()
+            return JWT.create()
                     .withIssuer(appName)
                     .withSubject(appUser.getId())
                     .withExpiresAt(Instant.now().plusSeconds(jwtExpirationInSecond ))
                     .withIssuedAt(Instant.now())
-                    .withClaim("role", appUser.getRoles())
+                    .withClaim("roles", appUser.getRoles().stream().map(role -> role.getRole().name()).toList())
                     .sign(algorithm);
-
-            return token;
         } catch (JWTCreationException e){
             log.error("error while creating jwt token: {}", e.getMessage());
             throw new RuntimeException(e);
@@ -63,7 +62,7 @@ public class JwtUtil {
 
             Map<String, String> userInfo = new HashMap<>();
             userInfo.put("userId", decodedJWT.getSubject());
-            userInfo.put("role", decodedJWT.getClaim("role").asString());
+            userInfo.put("roles", decodedJWT.getClaim("roles").asString());
             return userInfo;
         } catch (JWTVerificationException e) {
             log.error("invalid verification JWT: {}", e.getMessage());

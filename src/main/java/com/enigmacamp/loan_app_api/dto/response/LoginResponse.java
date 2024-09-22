@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -12,5 +14,5 @@ import lombok.NoArgsConstructor;
 public class LoginResponse {
     private String email;
     private String token;
-    private String role;
+    private List<String> role;
 }

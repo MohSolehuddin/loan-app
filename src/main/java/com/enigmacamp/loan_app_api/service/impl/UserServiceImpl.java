@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
                 .id(userCredential.getId())
                 .email(userCredential.getEmail())
                 .password(userCredential.getPassword())
-                .roles(userCredential.getRoles().stream().map(role -> role.getRole()).toList())
+                .roles(userCredential.getRoles())
                 .build();
     }
 
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
                 .id(userCredential.getId())
                 .email(userCredential.getEmail())
                 .password(userCredential.getPassword())
-                .roles(userCredential.getRoles().stream().map(role -> role.getRole()).toList())
+                .roles(userCredential.getRoles())
                 .build();
     }
 }

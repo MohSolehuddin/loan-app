@@ -5,6 +5,7 @@ import com.enigmacamp.loan_app_api.repository.UserRoleRepository;
 import com.enigmacamp.loan_app_api.security.JwtUtil;
 import com.enigmacamp.loan_app_api.service.AuthService;
 import com.enigmacamp.loan_app_api.service.RoleService;
+import com.enigmacamp.loan_app_api.service.UserRoleService;
 import com.enigmacamp.loan_app_api.util.ValidationUtil;
 import com.enigmacamp.loan_app_api.constant.ERole;
 import com.enigmacamp.loan_app_api.dto.request.AuthRequest;
@@ -55,16 +56,16 @@ public class AuthServiceImpl implements AuthService {
             User userCredential = User.builder()
                     .email(request.getEmail().toLowerCase())
                     .password(passwordEncoder.encode(request.getPassword()))
+                    .roles(Arrays.asList(roleStaff, roleAdmin))
                     .build();
             userRepository.saveAndFlush(userCredential);
-
             //customer
             Customer customer = Customer.builder()
                     .user(userCredential)
                     .build();
             customerService.createCustomer(customer);
 
-            List<String> roles = Arrays.asList(roleStaff.getRole().toString(), roleAdmin.getRole().toString());
+            List<String> roles = Arrays.asList(roleStaff.getRole().name(), roleAdmin.getRole().name());
             return RegisterResponse.builder()
                     .email(userCredential.getEmail())
                     .roles(roles)
@@ -90,10 +91,11 @@ public class AuthServiceImpl implements AuthService {
         AppUser appUser = (AppUser) authenticate.getPrincipal();
         String token = jwtUtil.generateToken(appUser);
 
+        List<String> roles = appUser.getRoles().stream().map(role -> role.getRole().name()).toList();
         return LoginResponse.builder()
                 .email(appUser.getEmail())
                 .token(token)
-                .role(appUser.getRoles().toString())
+                .role(roles)
                 .build();
     }
 }
