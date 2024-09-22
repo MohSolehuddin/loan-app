@@ -15,10 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-
 @RestController
-@RequestMapping(PathApi.USERS)
+@RequestMapping(PathApi.USER)
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
