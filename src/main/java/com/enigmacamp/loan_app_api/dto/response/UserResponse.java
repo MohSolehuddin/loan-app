@@ -1,5 +1,6 @@
 package com.enigmacamp.loan_app_api.dto.response;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,8 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CommonResponse <T>{
-    private String message;
-    private Integer statusCode;
-    private T data;
+public class UserResponse {
+    private String email;
+    private List<String> roles;
 }

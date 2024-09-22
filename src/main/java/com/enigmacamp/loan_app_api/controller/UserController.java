@@ -1,0 +1,35 @@
+package com.enigmacamp.loan_app_api.controller;
+
+import com.enigmacamp.loan_app_api.constant.PathApi;
+import com.enigmacamp.loan_app_api.dto.response.CommonResponse;
+import com.enigmacamp.loan_app_api.dto.response.UserResponse;
+import com.enigmacamp.loan_app_api.entity.AppUser;
+import com.enigmacamp.loan_app_api.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping(PathApi.USERS)
+@RequiredArgsConstructor
+public class UserController {
+    private final UserService userService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable String id){
+        AppUser user = userService.loadUserByUserId(id);
+        UserResponse response = UserResponse.builder()
+                .email(user.getEmail())
+                .roles(user.getRoles().stream().map(role -> role.getRole().name()).toList())
+                .build();
+        return ResponseEntity.status(200).body(
+                CommonResponse.builder()
+                        .message("Successfully getting data user by id")
+                        .statusCode(200)
+                        .data(response)
+                        .build());
+    }
+}
