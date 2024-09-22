@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.enigmacamp</groupId>
-	<artifactId>livecode-loan-app</artifactId>
+	<artifactId>loan-app-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>livecode-loan-app</name>
-	<description>Loan App Finantial Solution</description>
+	<name>loan-app-api</name>
+	<description>Loan App Financial Solution</description>
 	<url/>
 	<licenses>
 		<license/>
