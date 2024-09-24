@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 @NoArgsConstructor
-public class CommonPagingResponse<T> {
-    private String message;
-    private Integer statusCode;
-    private T data;
-    private Object paging;
+public class PagingResponse {
+    private Integer totalPages;
+    private Long count;
+    private Integer page;
+    private Integer size;
 }

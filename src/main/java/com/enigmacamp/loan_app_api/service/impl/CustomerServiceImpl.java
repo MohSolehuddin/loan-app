@@ -9,6 +9,9 @@ import com.enigmacamp.loan_app_api.service.CustomerService;
 import com.enigmacamp.loan_app_api.util.ValidationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.context.LifecycleAutoConfiguration;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -40,12 +43,13 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<CustomerResponse> getAllCustomer() {
-        List<Customer> customers = customerRepository.findAll();
+    public Page<CustomerResponse> getAllCustomer(Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<Customer> customers = customerRepository.findAll(pageable);
         if (customers.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Don't customer data");
         }
-        return customers.stream().map(CustomerMapper::mapToCustomerResponse).toList();
+        return customers.map(CustomerMapper::mapToCustomerResponse);
     }
 
     private Customer findCustomerOrThrowNotFound(String id){

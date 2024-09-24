@@ -2,12 +2,12 @@ package com.enigmacamp.loan_app_api.service;
 
 import com.enigmacamp.loan_app_api.dto.response.CustomerResponse;
 import com.enigmacamp.loan_app_api.entity.Customer;
+import org.springframework.data.domain.Page;
 
-import java.util.List;
 
 public interface CustomerService {
     CustomerResponse createCustomer(Customer customer);
     CustomerResponse getCustomerById(String id);
-    List<CustomerResponse> getAllCustomer();
+    Page<CustomerResponse> getAllCustomer(Integer page, Integer size);
 
 }
