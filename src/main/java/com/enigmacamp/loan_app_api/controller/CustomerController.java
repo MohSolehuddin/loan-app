@@ -2,6 +2,7 @@ package com.enigmacamp.loan_app_api.controller;
 
 import com.enigmacamp.loan_app_api.constant.PathApi;
 import com.enigmacamp.loan_app_api.dto.request.CustomerRequest;
+import com.enigmacamp.loan_app_api.dto.response.CommonResponse;
 import com.enigmacamp.loan_app_api.dto.response.CustomerResponse;
 import com.enigmacamp.loan_app_api.entity.Customer;
 import com.enigmacamp.loan_app_api.mapper.HTTPResponseMapper;
@@ -34,5 +35,14 @@ public class CustomerController {
     public ResponseEntity<?> updateCustomer(@RequestBody CustomerRequest request){
         CustomerResponse response = customerService.updateCustomer(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(HTTPResponseMapper.response(response, HttpStatus.CREATED, "Successfully update customer"));
+    }
+
+    @DeleteMapping(PathApi.PATH_VAR_ID)
+    public ResponseEntity<?> softDeleteCustomer(@PathVariable String id){
+        customerService.softDeleteCustomer(id);
+        return ResponseEntity.status(200).body(CommonResponse.builder()
+                        .message("Successfully deleting data")
+                        .statusCode(HttpStatus.OK.value())
+                .data(null).build());
     }
 }

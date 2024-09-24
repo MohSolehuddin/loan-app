@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -46,7 +48,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Page<CustomerResponse> getAllCustomer(Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<Customer> customers = customerRepository.findAll(pageable);
+        Page<Customer> customers = customerRepository.findAllByDeletedAt(null ,pageable);
         if (customers.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Don't customer data");
         }
@@ -73,6 +75,17 @@ public class CustomerServiceImpl implements CustomerService {
         }
         Customer customerUpdate = customerRepository.save(findCustomer);
         return CustomerMapper.mapToCustomerResponse(customerUpdate);
+    }
+
+    @Override
+    public void softDeleteCustomer(String id) {
+        Customer findCustomer = findCustomerOrThrowNotFound(id);
+        if (findCustomer.getDeletedAt() == null){
+            findCustomer.setDeletedAt(LocalDateTime.now());
+            customerRepository.save(findCustomer);
+        }else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Data customer is not found");
+        }
     }
 
     private Customer findCustomerOrThrowNotFound(String id){

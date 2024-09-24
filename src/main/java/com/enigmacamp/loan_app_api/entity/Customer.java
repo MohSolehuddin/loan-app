@@ -1,6 +1,8 @@
 package com.enigmacamp.loan_app_api.entity;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
+
 import com.enigmacamp.loan_app_api.constant.PathDb;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
@@ -42,4 +44,7 @@ public class Customer {
     @ManyToOne
     @JoinColumn(name = "profile_picture_id")
     private ProfilePicture profilePicture;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 }
