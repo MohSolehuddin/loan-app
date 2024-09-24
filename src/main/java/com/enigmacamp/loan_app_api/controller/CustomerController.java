@@ -1,7 +1,9 @@
 package com.enigmacamp.loan_app_api.controller;
 
 import com.enigmacamp.loan_app_api.constant.PathApi;
+import com.enigmacamp.loan_app_api.dto.request.CustomerRequest;
 import com.enigmacamp.loan_app_api.dto.response.CustomerResponse;
+import com.enigmacamp.loan_app_api.entity.Customer;
 import com.enigmacamp.loan_app_api.mapper.HTTPResponseMapper;
 import com.enigmacamp.loan_app_api.service.CustomerService;
 import lombok.RequiredArgsConstructor;
@@ -27,5 +29,10 @@ public class CustomerController {
         Page<CustomerResponse> responses = customerService.getAllCustomer(page, size);
 //        List<CustomerResponse> customerResponseList = customerService.getAllCustomer(page,size);
         return HTTPResponseMapper.pagingResponse(responses, HttpStatus.OK, "Successfully get all data");
+    }
+    @PostMapping
+    public ResponseEntity<?> updateCustomer(@RequestBody CustomerRequest request){
+        CustomerResponse response = customerService.updateCustomer(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(HTTPResponseMapper.response(response, HttpStatus.CREATED, "Successfully update customer"));
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -50,6 +51,28 @@ public class CustomerServiceImpl implements CustomerService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Don't customer data");
         }
         return customers.map(CustomerMapper::mapToCustomerResponse);
+    }
+
+    @Override
+    public CustomerResponse updateCustomer(CustomerRequest customerRequest) {
+        Customer findCustomer = findCustomerOrThrowNotFound(customerRequest.getId());
+        if (customerRequest.getFirstName() != null){
+            findCustomer.setFirstName(customerRequest.getFirstName());
+        }
+        if (customerRequest.getLastName() != null) {
+            findCustomer.setLastName(customerRequest.getLastName());
+        }
+        if (customerRequest.getPhone() != null) {
+            findCustomer.setPhone(customerRequest.getFirstName());
+        }
+        if (customerRequest.getStatus() != null){
+            findCustomer.setStatus(customerRequest.getStatus());
+        }
+        if (customerRequest.getDateOfBirth() != null){
+            findCustomer.setDateOfBirth(Date.valueOf(customerRequest.getDateOfBirth()));
+        }
+        Customer customerUpdate = customerRepository.save(findCustomer);
+        return CustomerMapper.mapToCustomerResponse(customerUpdate);
     }
 
     private Customer findCustomerOrThrowNotFound(String id){
