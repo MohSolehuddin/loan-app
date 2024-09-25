@@ -21,5 +21,6 @@ public class InstalmentType {
     private String id;
 
     @Column(name = "instalment_type")
+    @Enumerated(EnumType.STRING)
     private EInstalmentType instalmentType;
 }
