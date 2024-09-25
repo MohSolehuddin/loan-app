@@ -89,7 +89,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     private Customer findCustomerOrThrowNotFound(String id){
-        Optional<Customer> customerOptional = customerRepository.findById(id);
+        Optional<Customer> customerOptional = customerRepository.findByIdAndDeletedAtIsNull(id);
         return customerOptional.orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found"));
     }
 }
