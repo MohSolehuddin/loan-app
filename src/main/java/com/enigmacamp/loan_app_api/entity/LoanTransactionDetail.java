@@ -10,6 +10,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,7 +24,7 @@ public class LoanTransactionDetail {
     private String id;
 
     @Column(name = "transaction_date")
-    private Long transactionDate;
+    private LocalDateTime transactionDate;
 
     @Column
     private Double nominal;
@@ -40,8 +42,8 @@ public class LoanTransactionDetail {
     private LoanStatus loanStatus;
 
     @Column(name = "created_at")
-    private Long createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    private Long updatedAt;
+    private LocalDateTime updatedAt;
 }

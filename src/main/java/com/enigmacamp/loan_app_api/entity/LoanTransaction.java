@@ -1,6 +1,8 @@
 package com.enigmacamp.loan_app_api.entity;
 
 import com.enigmacamp.loan_app_api.constant.ApprovalStatus;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import com.enigmacamp.loan_app_api.constant.PathDb;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -38,7 +40,7 @@ public class LoanTransaction {
     private Double nominal;
 
     @Column(name = "approved_at")
-    private Long approvedAt;
+    private LocalDateTime approvedAt;
 
     @Column(name = "approved_by")
     private String approvedBy;
@@ -51,8 +53,8 @@ public class LoanTransaction {
     private List<LoanTransactionDetail> loanTransactionDetails;
 
     @Column(name = "created_at")
-    private Long createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    private Long updatedAt;
+    private LocalDateTime updatedAt;
 }

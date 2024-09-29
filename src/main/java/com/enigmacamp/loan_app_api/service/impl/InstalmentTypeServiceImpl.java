@@ -74,7 +74,7 @@ public class InstalmentTypeServiceImpl implements InstalmentTypeService {
         instalmentTypeRepository.delete(findInstalmentType);
     }
 
-    private InstalmentType findInstalmentTypeOrThrowNotFound(String id) {
+    public InstalmentType findInstalmentTypeOrThrowNotFound(String id) {
         Optional<InstalmentType> instalmentType = instalmentTypeRepository.findById(id);
         return instalmentType.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found"));
     }

@@ -15,4 +15,5 @@ public interface InstalmentTypeService {
     InstalmentTypeResponse getInstalmentTypeById(String id);
     Page<InstalmentTypeResponse> getAllInstalmentType(Integer page, Integer size);
     void deleteInstalmentType(String id);
+    InstalmentType findInstalmentTypeOrThrowNotFound(String id);
 }

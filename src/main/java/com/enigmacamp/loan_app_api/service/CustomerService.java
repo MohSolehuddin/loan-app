@@ -12,5 +12,5 @@ public interface CustomerService {
     Page<CustomerResponse> getAllCustomer(Integer page, Integer size);
     CustomerResponse updateCustomer(CustomerRequest customerRequest);
     void softDeleteCustomer(String id);
-
+    Customer findCustomerOrThrowNotFound(String id);
 }

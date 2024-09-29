@@ -64,7 +64,8 @@ public class LoanTypeServiceImpl implements LoanTypeService {
         LoanType findLoanType = findOrThrowNotFound(id);
         loanTypeRepository.delete(findLoanType);
     }
-    private LoanType findOrThrowNotFound(String id){
+    @Override
+    public LoanType findOrThrowNotFound(String id){
         return loanTypeRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, Loan type is not found"));
     }
 }

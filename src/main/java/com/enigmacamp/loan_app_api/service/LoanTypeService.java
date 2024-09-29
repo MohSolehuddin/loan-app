@@ -11,4 +11,5 @@ public interface LoanTypeService {
     Page<LoanTypeResponse> getAllLoanType(Integer page, Integer size);
     LoanTypeResponse updateLoanType(LoanType request);
     void deleteLoanType(String id);
+    LoanType findOrThrowNotFound(String id);
 }
