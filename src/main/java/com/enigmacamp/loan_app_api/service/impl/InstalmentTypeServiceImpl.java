@@ -40,6 +40,10 @@ public class InstalmentTypeServiceImpl implements InstalmentTypeService {
     public InstalmentTypeResponse updateInstalmentType(InstalmentTypeUpdateRequest updateRequest) {
         InstalmentType findInstalmentType = findInstalmentTypeOrThrowNotFound(updateRequest.getId());
         try {
+            Optional<InstalmentType> isInstalmentTypeReady = instalmentTypeRepository.findByInstalmentType(findInstalmentType.getInstalmentType());
+            if (isInstalmentTypeReady.isPresent()){
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Sorry don't creating instalment type because instalment type already exist");
+            }
             findInstalmentType.setInstalmentType(EInstalmentType.valueOf(updateRequest.getInstalmentType()));
             instalmentTypeRepository.save(findInstalmentType);
         }catch (Exception e){

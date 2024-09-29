@@ -1,6 +1,7 @@
 package com.enigmacamp.loan_app_api.entity;
 
 import com.enigmacamp.loan_app_api.constant.PathDb;
+import com.enigmacamp.loan_app_api.dto.response.LoanTypeResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,5 +19,5 @@ public class LoanType {
     @Column
     private String type;
     @Column(name = "max_loan")
-    private Double maxLoan;
+    private Long maxLoan;
 }
