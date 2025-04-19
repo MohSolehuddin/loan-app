@@ -13,7 +13,7 @@ public class CustomerMapper {
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .phone(request.getPhone())
-                .dateOfBirth(Date.valueOf(request.getDateOfBirth()))
+                .dateOfBirth(request.getDateOfBirth())
                 .build();
     }
     public static CustomerResponse mapToCustomerResponse(Customer customer){
@@ -25,8 +25,5 @@ public class CustomerMapper {
                 .lastName(customer.getLastName())
                 .dateOfBirth(customer.getDateOfBirth())
                 .build();
-    }
-    public static ResponseEntity<?> HTTPResponse(){
-        return null;
     }
 }
