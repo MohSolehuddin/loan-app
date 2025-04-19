@@ -28,13 +28,30 @@ public class CustomerController {
     @GetMapping
     public ResponseEntity<?> getAllCustomer(@RequestParam(required = false, defaultValue = "1") Integer page, @RequestParam(required = false, defaultValue = "5") Integer size){
         Page<CustomerResponse> responses = customerService.getAllCustomer(page, size);
-//        List<CustomerResponse> customerResponseList = customerService.getAllCustomer(page,size);
         return HTTPResponseMapper.pagingResponse(responses, HttpStatus.OK, "Successfully get all data");
     }
     @PostMapping
     public ResponseEntity<?> updateCustomer(@RequestBody CustomerRequest request){
+        Customer customer = Customer.builder()
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .phone(request.getPhone())
+                .status(request.getStatus())
+                .build();
+        CustomerResponse response = customerService.createCustomer(customer);
+        return ResponseEntity.status(HttpStatus.CREATED).body(HTTPResponseMapper.response(response, HttpStatus.CREATED, "Successfully create customer"));
+    }
+
+    @PutMapping
+    public  ResponseEntity<?> createCustomer(@RequestBody CustomerRequest request){
+        Customer customer = Customer.builder()
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .phone(request.getPhone())
+                .status(request.getStatus())
+                .build();
         CustomerResponse response = customerService.updateCustomer(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(HTTPResponseMapper.response(response, HttpStatus.CREATED, "Successfully update customer"));
+        return ResponseEntity.status(HttpStatus.OK).body(HTTPResponseMapper.response(response, HttpStatus.OK, "Successfully update customer"));
     }
 
     @DeleteMapping(PathApi.PATH_VAR_ID)
