@@ -2,6 +2,7 @@ package com.enigmacamp.loan_app_api.controller;
 
 import com.enigmacamp.loan_app_api.constant.PathApi;
 import com.enigmacamp.loan_app_api.dto.request.AuthRequest;
+import com.enigmacamp.loan_app_api.dto.request.RegisterRequest;
 import com.enigmacamp.loan_app_api.dto.response.CommonResponse;
 import com.enigmacamp.loan_app_api.dto.response.LoginResponse;
 import com.enigmacamp.loan_app_api.dto.response.RegisterResponse;
@@ -18,11 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(PathApi.AUTH)
 @RequiredArgsConstructor
 public class AuthController {
-
     private final AuthService authService;
 
     @PostMapping(PathApi.SIGN_UP)
-    public ResponseEntity<?> register(@RequestBody AuthRequest request){
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request){
         RegisterResponse registerResponse = authService.signup(request);
         CommonResponse<RegisterResponse> response = CommonResponse.<RegisterResponse>builder()
                 .message("Successfully created customer")
@@ -44,5 +44,4 @@ public class AuthController {
                 .status(HttpStatus.OK)
                 .body(response);
     }
-
 }
