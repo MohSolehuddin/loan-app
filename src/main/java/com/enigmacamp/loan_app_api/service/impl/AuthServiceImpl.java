@@ -1,5 +1,6 @@
 package com.enigmacamp.loan_app_api.service.impl;
 
+import com.enigmacamp.loan_app_api.dto.request.RegisterRequest;
 import com.enigmacamp.loan_app_api.repository.UserRepository;
 import com.enigmacamp.loan_app_api.repository.UserRoleRepository;
 import com.enigmacamp.loan_app_api.security.JwtUtil;
@@ -15,6 +16,7 @@ import com.enigmacamp.loan_app_api.dto.response.RegisterResponse;
 import com.enigmacamp.loan_app_api.entity.*;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.flogger.Flogger;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.crypto.spec.OAEPParameterSpec;
+import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -67,10 +70,11 @@ public class AuthServiceImpl implements AuthService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public RegisterResponse signup(AuthRequest request) {
+    public RegisterResponse signup(RegisterRequest request) {
+        System.out.println("Request creating user: " + request);
         try {
             validationUtil.validate(request);
-            //role
+
             Role roleStaff = roleService.getOrSave(Role.builder()
                     .role(ERole.ROLE_STAFF)
                     .build());
@@ -78,16 +82,21 @@ public class AuthServiceImpl implements AuthService {
             Role roleAdmin = roleService.getOrSave(Role.builder()
                     .role(ERole.ROLE_ADMIN)
                     .build());
-            // user credential
+
             User userCredential = User.builder()
                     .email(request.getEmail().toLowerCase())
                     .password(passwordEncoder.encode(request.getPassword()))
                     .roles(Arrays.asList(roleStaff, roleAdmin))
                     .build();
-            userRepository.saveAndFlush(userCredential);
-            //customer
+            User userCreated = userRepository.saveAndFlush(userCredential);
+            System.out.println("User id: " + userCreated.getId());
+
             Customer customer = Customer.builder()
                     .user(userCredential)
+                    .firstName(request.getFirstName())
+                    .lastName(request.getLastName())
+                    .dateOfBirth(Date.valueOf(request.getDateOfBirth()))
+                    .phone(request.getPhone())
                     .build();
             customerService.createCustomer(customer);
 
@@ -97,23 +106,32 @@ public class AuthServiceImpl implements AuthService {
                     .roles(roles)
                     .build();
 
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "User already exist " + e.getMessage());
+        } catch (DataIntegrityViolationException e){
+            e.printStackTrace();
+            String errorMessage = e.getMostSpecificCause().getMessage();
+
+            if (errorMessage.contains("duplicate key value violates unique constraint")) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT,  "Email already exists");
+            }
+            throw new ResponseStatusException(HttpStatus.CONFLICT,  e.getMostSpecificCause().getMessage());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error: " + e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error " + e.getMessage());
         }
     }
 
     @Override
     public LoginResponse signin(AuthRequest request) {
-        // tempat untuk logic login
+
         validationUtil.validate(request);
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getEmail().toLowerCase(),
                 request.getPassword()
         ));
-
         SecurityContextHolder.getContext().setAuthentication(authenticate);
 
-        // object AppUser
         AppUser appUser = (AppUser) authenticate.getPrincipal();
         String token = jwtUtil.generateToken(appUser);
 
