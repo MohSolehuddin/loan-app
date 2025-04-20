@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @Builder
@@ -22,7 +23,7 @@ public class LoanTransactionResponse {
     private LocalDateTime approvedAt;
     private String approvedBy;
     private String approvedStatus;
-    private LoanTransactionDetailResponse transactionDetailResponses;
+    private List<LoanTransactionDetailResponse> transactionDetailResponses;
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;
 }
