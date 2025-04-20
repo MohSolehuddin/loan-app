@@ -36,7 +36,7 @@ public class InstalmentTypeController {
     @PutMapping
     public ResponseEntity<?> updateInstalmentType(@RequestBody InstalmentTypeUpdateRequest request){
         InstalmentTypeResponse response = instalmentTypeService.updateInstalmentType(request);
-        return HTTPResponseMapper.response(response, HttpStatus.CREATED, "successfully update data instalment type");
+        return HTTPResponseMapper.response(response, HttpStatus.OK, "successfully update data instalment type");
     }
 
     @DeleteMapping(PathApi.PATH_VAR_ID)
