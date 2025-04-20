@@ -1,17 +1,19 @@
 package com.enigmacamp.loan_app_api.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
 @AllArgsConstructor
 @Builder
 @Data
 @NoArgsConstructor
 public class LoanTransactionRequest {
+    @NotNull
     private String loanTypeId;
-    private String instalmentType;
+    @NotNull
+    private String instalmentTypeId;
+    @NotNull
     private String customerId;
-    private Long nominal;
+    @NotNull
+    private Double nominal;
 }
