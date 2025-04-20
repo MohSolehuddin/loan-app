@@ -28,6 +28,5 @@ public class User {
     @Column(nullable = false)
     private String password;
     @ManyToMany(fetch = FetchType.EAGER)
-//    @Cascade(CascadeType.PERSIST)
     List<Role> roles;
 }
