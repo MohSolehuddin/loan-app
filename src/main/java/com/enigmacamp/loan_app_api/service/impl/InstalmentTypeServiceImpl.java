@@ -40,13 +40,14 @@ public class InstalmentTypeServiceImpl implements InstalmentTypeService {
     public InstalmentTypeResponse updateInstalmentType(InstalmentTypeUpdateRequest updateRequest) {
         InstalmentType findInstalmentType = findInstalmentTypeOrThrowNotFound(updateRequest.getId());
         try {
-            Optional<InstalmentType> isInstalmentTypeReady = instalmentTypeRepository.findByInstalmentType(findInstalmentType.getInstalmentType());
+            Optional<InstalmentType> isInstalmentTypeReady = instalmentTypeRepository.findByInstalmentType(EInstalmentType.valueOf(updateRequest.getInstalmentType()));
             if (isInstalmentTypeReady.isPresent()){
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "Sorry don't creating instalment type because instalment type already exist");
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Sorry don't updating instalment type because instalment type already exist");
             }
             findInstalmentType.setInstalmentType(EInstalmentType.valueOf(updateRequest.getInstalmentType()));
             instalmentTypeRepository.save(findInstalmentType);
         }catch (Exception e){
+            e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, Instalment type not ready in list");
         }
         return InstalmentTypeMapper.mapToInstalmentTypeResponse(findInstalmentType);
@@ -76,6 +77,6 @@ public class InstalmentTypeServiceImpl implements InstalmentTypeService {
 
     public InstalmentType findInstalmentTypeOrThrowNotFound(String id) {
         Optional<InstalmentType> instalmentType = instalmentTypeRepository.findById(id);
-        return instalmentType.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found"));
+        return instalmentType.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Instalment type not found"));
     }
 }
