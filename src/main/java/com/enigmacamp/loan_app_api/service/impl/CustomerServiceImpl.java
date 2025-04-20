@@ -71,7 +71,7 @@ public class CustomerServiceImpl implements CustomerService {
             findCustomer.setStatus(customerRequest.getStatus());
         }
         if (customerRequest.getDateOfBirth() != null){
-            findCustomer.setDateOfBirth(Date.valueOf(customerRequest.getDateOfBirth()));
+            findCustomer.setDateOfBirth(customerRequest.getDateOfBirth());
         }
         Customer customerUpdate = customerRepository.save(findCustomer);
         return CustomerMapper.mapToCustomerResponse(customerUpdate);
